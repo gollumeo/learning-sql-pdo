@@ -1,6 +1,6 @@
 <?php
 
-blablabla 
+echo "placeholder";
 
 ?>
 
