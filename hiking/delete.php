@@ -1,0 +1,2 @@
+<?php
+/**** Supprimer une randonnée ****/
