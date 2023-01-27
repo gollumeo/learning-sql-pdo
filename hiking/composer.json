@@ -1,0 +1,17 @@
+{
+    "name": "pitdu/hiking",
+    "autoload": {
+        "psr-4": {
+            "Pitdu\\Hiking\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pierre M",
+            "email": "109650634+Gollumeo@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "filp/whoops": "^2.14"
+    }
+}

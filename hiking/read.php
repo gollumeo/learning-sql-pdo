@@ -1,5 +1,6 @@
 <?php
 include './config_db.php';
+
 ?>
 
 
@@ -32,9 +33,9 @@ include './config_db.php';
                 </tr>
                 </thead>
                 <tbody style="border: 1px black solid;">
-                <tr style="border: 1px black solid;">
-                    <td></td>
-                    <form action="./update.php" method="post">
+                <form action="./update.php" method="post">
+                    <tr style="border: 1px black solid;">
+                        <td></td>
                         <td><?php echo $row['name']; ?></a></td>
                         <td><?php echo $row['difficulty']; ?></td>
                         <td><?php echo $row['distance']; ?></td>
@@ -42,8 +43,8 @@ include './config_db.php';
                         <td><?php echo $row['height_difference']; ?></td>
 
                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                        <input type="submit" value="Update">
-                    </form>
+                        <input type="submit" name="update" value="Update">
+                </form>
                 </tr>
                 </tbody>
             </table>
