@@ -1,3 +1,10 @@
+<?php
+    if (!session_start() || $_SESSION['user_id'] != 1) {
+        echo "Unauthorized access! Please <a href='./login.php'>log in</a>!";
+        return;
+    }
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,7 +50,7 @@
 </html>
 
 <?php
-
+require_once './Core/helper.php';
 include './config_db.php';
 
 if (isset($_POST['button'])) {

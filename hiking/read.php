@@ -1,10 +1,11 @@
 <?php
 include './config_db.php';
+require_once './Core/helper.php';
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -15,6 +16,7 @@ error_reporting(E_ALL);
 </head>
 <body>
 <h1>Hikes list</h1>
+<a href="./create.php">Create a new hike!</a>
 <table>
     <!-- Afficher la liste des randonnées -->
     <?php
@@ -50,9 +52,9 @@ error_reporting(E_ALL);
                         <input type="submit" name="update" value="Update">
                 </form>
                 <td>
-                    <form method='get' action='<?php echo $_SERVER['PHP_SELF'] ?>'><input type='checkbox' name='delete'
-                                                                                          value=' <?php echo $row['name'] ?> '
-                                                                                          onclick='this.form.submit()'>
+                    <form method='post'><input type='checkbox' name='delete'
+                                               value='<?php echo $row['name'] ?>'
+                                               onclick='this.form.submit()'>
                     </form>
                 </td>
                 </tr>
@@ -65,19 +67,18 @@ error_reporting(E_ALL);
         echo $e->getMessage();
     };
 
-    if (isset($_GET['delete'])) {
-        $name_delete = $_GET['delete'];
-//        try {
+    if (isset($_POST['delete'])) {
+        $name_delete = $_POST['delete'];
+        try {
             $db = new PDO("mysql:host=localhost;dbname=$db_name", "$username", "$password");
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $stmt = $db->prepare("DELETE FROM hiking WHERE hiking.name = :name");
             $stmt->bindParam(':name', $name_delete);
             $stmt->execute();
-            echo $name_delete;
-
-//        } catch (PDOException $e) {
-////            echo $e->getMessage();
-////        }
+            header('Location: read.php');
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
     }
     ?>
 </table>
