@@ -1,6 +1,8 @@
 <?php
 include './config_db.php';
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ?>
 
 
@@ -30,6 +32,7 @@ include './config_db.php';
                     <th>Distance</th>
                     <th>Duration</th>
                     <th>Height difference</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody style="border: 1px black solid;">
@@ -42,9 +45,16 @@ include './config_db.php';
                         <td><?php echo $row['duration']; ?></td>
                         <td><?php echo $row['height_difference']; ?></td>
 
+
                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                         <input type="submit" name="update" value="Update">
                 </form>
+                <td>
+                    <form method='get' action='<?php echo $_SERVER['PHP_SELF'] ?>'><input type='checkbox' name='delete'
+                                                                                          value=' <?php echo $row['name'] ?> '
+                                                                                          onclick='this.form.submit()'>
+                    </form>
+                </td>
                 </tr>
                 </tbody>
             </table>
@@ -54,6 +64,21 @@ include './config_db.php';
     } catch (PDOException $e) {
         echo $e->getMessage();
     };
+
+    if (isset($_GET['delete'])) {
+        $name_delete = $_GET['delete'];
+//        try {
+            $db = new PDO("mysql:host=localhost;dbname=$db_name", "$username", "$password");
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $db->prepare("DELETE FROM hiking WHERE hiking.name = :name");
+            $stmt->bindParam(':name', $name_delete);
+            $stmt->execute();
+            echo $name_delete;
+
+//        } catch (PDOException $e) {
+////            echo $e->getMessage();
+////        }
+    }
     ?>
 </table>
 </body>

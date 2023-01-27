@@ -1,16 +1,14 @@
 <?php
 
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include './config_db.php';
+$id = $_POST['id'];
 
 if (isset($_POST['update'])) {
-    var_dump($_POST['update']);
-    echo $_POST['id'];
-    $id = $_POST['id'];
+
     try {
         $db = new PDO("mysql:host=localhost;dbname=$db_name", $username, $password);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -38,9 +36,10 @@ if (isset($_POST['update'])) {
         <body>
         <a href="./read.php">Hikes data</a>
         <h1>Update</h1>
-        <form action="update.php" method="post">
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <div>
                 <label for="name">Name</label>
+                <input type="hidden" name ="id" value="<?php echo $id ?>">
                 <input type="text" name="name" value="<?php echo $og_name ?>">
             </div>
 
@@ -73,36 +72,34 @@ if (isset($_POST['update'])) {
         </body>
         </html>
         <?php
-        if (isset($_POST['button'])) {
-            var_dump($_POST['button']);
-            $new_name = $_POST['name'];
-            $new_difficulty = $_POST['difficulty'];
-            $new_distance = $_POST['distance'];
-            $new_duration = $_POST['duration'];
-            $new_height_difference = $_POST['height_difference'];
-            var_dump($id);
-            try {
-//                $stmt = $db->prepare("UPDATE hiking SET hiking.name = :name, hiking.difficulty = :difficulty, hiking.distance = :distance, hiking.duration = :duration, hiking.height_difference = :height_difference WHERE hiking.id = :id");
-//                $stmt->bindParam(':name', $new_name);
-//                $stmt->bindParam(':difficulty', $new_difficulty);
-//                $stmt->bindParam(':distance', $new_distance);
-//                $stmt->bindParam(':duration', $new_duration);
-//                $stmt->bindParam(':height_difference', $new_height_difference);
-//                $stmt->bindParam(':id', $id);
-//                $stmt->execute();
-//
-//                echo "Hike successfully updated!";
-
-        } catch (PDOException $e) {
-                echo $e->getMessage();
-            }
-        }
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
-//} else { ?>
-<!--    <h2>Please go <a href="./read.php">back</a> and provide us with an actual hike.</h2>-->
-<?php   }
+}
 
+if (isset($_POST['button'])) {
 
+    $new_name = $_POST['name'];
+    $new_difficulty = $_POST['difficulty'];
+    $new_distance = $_POST['distance'];
+    $new_duration = $_POST['duration'];
+    $new_height_difference = $_POST['height_difference'];
+    try {
+        $db = new PDO("mysql:host=localhost;dbname=$db_name", $username, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = $db->prepare("UPDATE hiking SET hiking.name = :name, hiking.difficulty = :difficulty, hiking.distance = :distance, hiking.duration = :duration, hiking.height_difference = :height_difference WHERE hiking.id = :id");
+        $stmt->bindParam(':name', $new_name);
+        $stmt->bindParam(':difficulty', $new_difficulty);
+        $stmt->bindParam(':distance', $new_distance);
+        $stmt->bindParam(':duration', $new_duration);
+        $stmt->bindParam(':height_difference', $new_height_difference);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        echo "Hike successfully updated! <br> Back to your <a href='./read.php'>hikes</a>! ";
+
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
 ?>
